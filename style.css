@@ -1,4 +1,31 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: sans-serif;
+}
+.container {
+    padding: 0 50px;
+}
+.nav {
+    display: flex;
+    gap: 10px;
+    background: #f5f5f5;
+    padding: 10px;
+}
+.logo {
+    color: black;
+    font-weight: bold;
+    font-size: 30px;
+}
+.menus {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.nav-item {
+    padding: 0 5px;
+    font-size: 18px;
+    text-decoration: none;
+    color: #666;
 }
