@@ -24,20 +24,22 @@
             <div class="card-header">
                 <span>Edit Task</span>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="card_body">
                 <form>
                     <div class="form-group">
                         <label>Title</label>
-                        <input type="text" name="title" id="title" class="form-control" value="Task Title" placeholder="Enter task title">
+                        <input type="text" name="title" id="title" class="form-control" value="" placeholder="Enter task title">
                     </div>
                     <div class="form-group">
                         <label>Description</label>
-                        <textarea name="description" id="description" class="form-control" placeholder="Enter task description">Task Description aksjdfasldfj</textarea>
+                        <textarea name="description" id="description" class="form-control" placeholder="Enter task description"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-primary" id="edit_btn">Submit</button>
                 </form>
             </div>
         </div>
     </div>
+    <script src="../public/js/config.js"></script>
+    <script src="../public/js/edit.js"></script>
 </body>
 </html>

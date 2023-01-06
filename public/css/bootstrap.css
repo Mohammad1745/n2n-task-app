@@ -1,3 +1,6 @@
+.cursor-pointer {
+    cursor: pointer;
+}
 /* card-starts*/
 .card {
     border: 1px solid #ccc;

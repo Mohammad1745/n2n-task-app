@@ -1,29 +1,59 @@
 let tasks = getTasks()
 
-let tasksDom = document.getElementById('tasks')
+document.addEventListener('DOMContentLoaded', function () {
+    loadTasks()
+    setDetailsBtnHandler ()
+    setEditBtnHandler()
+    setDeleteBtnHandler ()
+})
 
-if (tasks.length===0) {
-    tasksDom.innerHTML = 'No Task Available'
-}
-else {
-    for (let i=0; i<tasks.length; i++) {
-        appendTask(tasks[i], i)
+function loadTasks () {
+    let tasksDom = document.getElementById('tasks')
+    if (tasks.length===0) {
+        tasksDom.innerHTML = 'No Task Available'
+    }
+    else {
+        for (let i=0; i<tasks.length; i++) {
+            appendTask(tasks[i], i)
+        }
     }
 }
-setDeleteBtnHandler ()
 
-function appendTask(task, index) {
+function appendTask (task, index) {
+    let tasksDom = document.getElementById('tasks')
     tasksDom.insertAdjacentHTML('beforeend', `
         <div class="task-item">
             <div class="task-title">
-                <a href="task_details.html">${task.title}</a>
+                <span class="details-btn cursor-pointer" data-index="${index}">${task.title}</a>
             </div>
             <div class="task-actions">
-                <a href="edit_task.html" class="btn btn-info">Edit</a>
+                <span class="btn btn-info edit-btn" data-index="${index}">Edit</span>
                 <span class="btn btn-danger delete-btn" data-index="${index}">Delete</span>
             </div>
         </div>
     `)
+}
+
+function setDetailsBtnHandler() {
+    let detailsBtns = document.querySelectorAll('.details-btn')
+    for (let i=0; i<detailsBtns.length; i++) {
+        detailsBtns[i].addEventListener('click', function () {
+            let index = detailsBtns[i].getAttribute('data-index')
+            setIndex(index)
+            document.location.href = "task_details.html"
+        })
+    }
+}
+
+function setEditBtnHandler() {
+    let editBtns = document.querySelectorAll('.edit-btn')
+    for (let i=0; i<editBtns.length; i++) {
+        editBtns[i].addEventListener('click', function () {
+            let index = editBtns[i].getAttribute('data-index')
+            setIndex(index)
+            document.location.href = "edit_task.html"
+        })
+    }
 }
 
 function setDeleteBtnHandler() {
