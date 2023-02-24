@@ -1,24 +1,26 @@
-function getTasks() {
+const apiBase = `http://127.0.0.1:8001/api/`
+
+export function getTasks() {
     let tasks =  localStorage.getItem('tasks')
     if (tasks) {
         return JSON.parse(tasks)
     }
     return [];
 }
-function getTask(index) {
+export function getTask(index) {
     let tasks =  getTasks()
     if (index < tasks.length) {
         return tasks[index]
     }
     return null
 }
-function setTask(task) {
+export function setTask(task) {
     let tasks =  getTasks()
     tasks.push(task)
     localStorage.setItem('tasks', JSON.stringify(tasks))
     return true
 }
-function updateTask(task, index) {
+export function updateTask(task, index) {
     let tasks =  getTasks()
     if (index >= tasks.length) {
         return false
@@ -27,7 +29,7 @@ function updateTask(task, index) {
     localStorage.setItem('tasks', JSON.stringify(tasks))
     return true
 }
-function deleteTask(index) {
+export function deleteTask(index) {
     let tasks = getTasks()
     if (index >= tasks.length) {
         return false
@@ -36,11 +38,11 @@ function deleteTask(index) {
     localStorage.setItem('tasks', JSON.stringify(tasks))
     return true
 }
-function getIndex() {
+export function getIndex() {
     let index = localStorage.getItem('task-index')
     return index ? index : null
 }
-function setIndex(index) {
+export function setIndex(index) {
     localStorage.setItem('task-index', index)
     return true
 }
