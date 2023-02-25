@@ -1,9 +1,7 @@
 import {setTask} from "./config";
 
 const create = {
-    load : () => {
-        const app = document.getElementById('app')
-        app.innerHTML = create.template
+    setup: () => {
         create.setCreateBtnHandler()
     },
     template:  `

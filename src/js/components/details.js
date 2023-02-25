@@ -1,15 +1,9 @@
-import {deleteTask, getIndex, getTask, setIndex} from "./config";
+import {deleteTask, getTask} from "./config";
 
 const details = {
-    load : () => {
-        details.index = getIndex()
-        if (!details.index ) {
-            document.location.href = "/"
-        }
-        const app = document.getElementById('app')
-        app.innerHTML = details.template
+    setup: ({id}) => {
+        details.index = id
         details.renderTask()
-        details.setEditBtnHandler()
         details.setDeleteBtnHandler()
     },
 
@@ -31,7 +25,7 @@ const details = {
                 <div class="card-header">
                     <span>Task Details</span>
                     <div class="task-actions">
-                        <span class="btn btn-info" id="edit_btn">Edit</span>
+                        <a class="btn btn-info" id="edit_btn">Edit</a>
                         <span class="btn btn-danger" id="delete_btn">Delete</span>
                     </div>
                 </div>
@@ -45,23 +39,16 @@ const details = {
 
     renderTask: () => {
         let task = getTask(details.index)
+        let editButton = document.getElementById('edit_btn')
         let titleDom = document.getElementById('title')
         let descriptionDom = document.getElementById('description')
         if (!task) {
             titleDom.innerHTML = "<b>Task Not Found</b>"
         } else {
+            editButton.href = '/edit/'+details.index
             titleDom.innerHTML = task.title
             descriptionDom.innerHTML = task.description
         }
-    },
-
-
-    setEditBtnHandler: () => {
-        let editBtn = document.getElementById('edit_btn')
-        editBtn.addEventListener('click', function () {
-            setIndex(details.index)
-            document.location.href = "/edit"
-        })
     },
 
     setDeleteBtnHandler: () => {

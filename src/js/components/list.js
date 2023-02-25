@@ -1,13 +1,9 @@
 import {getTasks,setIndex,deleteTask} from './config'
 
 const list = {
-    load: () => {
+    setup: () => {
         list.tasks = getTasks()
-        const app = document.getElementById('app')
-        app.innerHTML = list.template
         list.loadTasks()
-        list.setDetailsBtnHandler ()
-        list.setEditBtnHandler()
         list.setDeleteBtnHandler ()
     },
     template:  `
@@ -55,36 +51,14 @@ const list = {
         tasksDom.insertAdjacentHTML('beforeend', `
         <div class="task-item">
             <div class="task-title">
-                <span class="details-btn cursor-pointer" data-index="${index}">${task.title}</a>
+                <a href="/${index}" class="details-btn cursor-pointer">${task.title}</a>
             </div>
             <div class="task-actions">
-                <span class="btn btn-info edit-btn" data-index="${index}">Edit</span>
+                <a  href="/edit/${index}" class="btn btn-info edit-btn"">Edit</a>
                 <span class="btn btn-danger delete-btn" data-index="${index}">Delete</span>
             </div>
         </div>
     `)
-    },
-
-    setDetailsBtnHandler: () => {
-        let detailsBtns = document.querySelectorAll('.details-btn')
-        for (let i = 0; i < detailsBtns.length; i++) {
-            detailsBtns[i].addEventListener('click', function () {
-                let index = detailsBtns[i].getAttribute('data-index')
-                setIndex(index)
-                document.location.href = "/details"
-            })
-        }
-    },
-
-    setEditBtnHandler: () => {
-        let editBtns = document.querySelectorAll('.edit-btn')
-        for (let i = 0; i < editBtns.length; i++) {
-            editBtns[i].addEventListener('click', function () {
-                let index = editBtns[i].getAttribute('data-index')
-                setIndex(index)
-                document.location.href = "/edit"
-            })
-        }
     },
 
     setDeleteBtnHandler: () => {

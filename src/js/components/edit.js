@@ -1,13 +1,8 @@
-import {getIndex, getTask, updateTask} from "./config";
+import {getTask, updateTask} from "./config";
 
-let edit = {
-    load : () => {
-        edit.index = getIndex()
-        if (!edit.index) {
-            document.location.href = "/"
-        }
-        const app = document.getElementById('app')
-        app.innerHTML = edit.template
+const edit = {
+    setup: ({id}) => {
+        edit.index = id
         edit.renderTask()
         edit.setEditBtnHandler()
     },
@@ -70,7 +65,7 @@ let edit = {
                 description: descriptionInput.value
             }
             updateTask(task, edit.index)
-            document.location.href = "/details"
+            document.location.href = "/"+edit.index
         })
     }
 }
