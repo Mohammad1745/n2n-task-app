@@ -5,12 +5,6 @@ module.exports = {
     mode: "development",
     entry: [
         "./src/index.js",
-        // './src/js/api_service.js',
-        './src/js/config.js',
-        // './src/js/create.js',
-        // './src/js/details.js',
-        // './src/js/edit.js',
-        './src/js/list.js',
         "./src/css/style.css",
         "./src/css/bootstrap.css",
     ],

@@ -1,6 +1,15 @@
 import {getTasks,setIndex,deleteTask} from './config'
+
 const list = {
-    tasks: getTasks(),
+    load: () => {
+        list.tasks = getTasks()
+        const app = document.getElementById('app')
+        app.innerHTML = list.template
+        list.loadTasks()
+        list.setDetailsBtnHandler ()
+        list.setEditBtnHandler()
+        list.setDeleteBtnHandler ()
+    },
     template:  `
         <div class="container">
             <div class="nav">
@@ -29,15 +38,6 @@ const list = {
             </div>
         </div>
     `,
-
-    load: function () {
-        const app = document.getElementById('app')
-        app.innerHTML = list.template
-        list.loadTasks()
-        list.setDetailsBtnHandler ()
-        list.setEditBtnHandler()
-        list.setDeleteBtnHandler ()
-    },
 
     loadTasks: () =>  {
         let tasksDom = document.getElementById('tasks')
@@ -71,7 +71,7 @@ const list = {
             detailsBtns[i].addEventListener('click', function () {
                 let index = detailsBtns[i].getAttribute('data-index')
                 setIndex(index)
-                document.location.href = "task_details.html"
+                document.location.href = "/details"
             })
         }
     },
@@ -82,7 +82,7 @@ const list = {
             editBtns[i].addEventListener('click', function () {
                 let index = editBtns[i].getAttribute('data-index')
                 setIndex(index)
-                document.location.href = "edit_task.html"
+                document.location.href = "/edit"
             })
         }
     },

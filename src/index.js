@@ -1,26 +1,26 @@
 import list from "./js/list"
+import create from "./js/create";
+import details from "./js/details";
+import edit from "./js/edit";
+
 document.addEventListener("DOMContentLoaded", (event) => {
-    const uri = window.location.pathname
-    window.addEventListener('popstate', () => renderRoute(uri));
+    window.addEventListener('popstate', renderRoute);
 // Render the initial route
-    renderRoute(uri);
+    renderRoute();
 })
-const renderRoute = (uri) => {
+const renderRoute = () => {
+    const uri = window.location.pathname
     if (uri === '/') {
-        list.load(app)
+        list.load()
     }
     if (uri === '/create') {
-        const app = document.getElementById('app')
-        app.innerHTML = "<h1>CREATE TASK</h1>"
+        create.load()
     }
     if (uri === '/details') {
-        const app = document.getElementById('app')
-        app.innerHTML = "<h1>TASK DETAILS</h1>"
+        details.load()
     }
     if (uri === '/edit') {
-        const app = document.getElementById('app')
-        app.innerHTML = "<h1>EDIT TASK</h1>"
+        edit.load()
     }
-
 };
 
