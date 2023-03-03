@@ -17,7 +17,6 @@ const router = {
                 urlParams.id = uri.substring(varIndex+1)
                 uri = uri.substring(0,varIndex)
             }
-            console.log(uri, key, urlParams)
             if (uri === key) {
                 const app = document.getElementById('app')
                 app.innerHTML = component.template

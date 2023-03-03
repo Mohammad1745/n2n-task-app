@@ -33,7 +33,7 @@ const create = {
                             <label>Description</label>
                             <textarea name="description" id="description" class="form-control" placeholder="Enter task description"></textarea>
                         </div>
-                        <button type="button" class="btn btn-primary" id="create_btn">Submit</button>
+                        <button type="button" class="btn btn-primary" id="submit_btn">Submit</button>
                     </form>
                 </div>
             </div>
@@ -41,16 +41,15 @@ const create = {
     `,
 
     setCreateBtnHandler: () => {
-        let createBtn = document.getElementById('create_btn')
-        createBtn.addEventListener('click', function () {
+        let createBtn = document.getElementById('submit_btn')
+        createBtn.addEventListener('click', async function () {
             let titleInput = document.getElementById('title')
             let descriptionInput = document.getElementById('description')
             let task = {
                 title: titleInput.value,
                 description: descriptionInput.value
             }
-            setTask(task)
-            document.location.href = '/'
+            await setTask(task)
         })
     }
 }

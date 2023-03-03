@@ -2,7 +2,7 @@ import {deleteTask, getTask} from "./config";
 
 const details = {
     setup: ({id}) => {
-        details.index = id
+        details.id = id
         details.renderTask()
         details.setDeleteBtnHandler()
     },
@@ -37,15 +37,15 @@ const details = {
         </div>
     `,
 
-    renderTask: () => {
-        let task = getTask(details.index)
+    renderTask: async () => {
+        let task = await getTask(details.id)
         let editButton = document.getElementById('edit_btn')
         let titleDom = document.getElementById('title')
         let descriptionDom = document.getElementById('description')
         if (!task) {
             titleDom.innerHTML = "<b>Task Not Found</b>"
         } else {
-            editButton.href = '/edit/'+details.index
+            editButton.href = '/edit/'+details.id
             titleDom.innerHTML = task.title
             descriptionDom.innerHTML = task.description
         }
@@ -54,7 +54,7 @@ const details = {
     setDeleteBtnHandler: () => {
         let deleteBtn = document.getElementById('delete_btn')
         deleteBtn.addEventListener('click', function () {
-            deleteTask(details.index)
+            deleteTask(details.id)
             document.location.href = "/"
         })
     }
