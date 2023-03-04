@@ -109,3 +109,21 @@ textarea.form-control {
     color: #666;
 }
 /* nav-bar-ends */
+
+/* alert-starts */
+.alert {
+    position: absolute;
+    left: 0;
+    width: 100vw;
+    height: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+.alert-success {
+    background: #5cb85c;
+}
+.alert-danger {
+    background: #dc3545;
+}
+/* alert-ends*/

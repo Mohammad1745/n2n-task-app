@@ -1,10 +1,12 @@
-import {deleteTask, getTask} from "./config";
+import {deleteTask, getTask} from "../services/api_service";
+import alert from "../components/alert";
 
 const details = {
     setup: ({id}) => {
         details.id = id
         details.renderTask()
         details.setDeleteBtnHandler()
+        details.showAlert()
     },
 
     template: `
@@ -20,6 +22,7 @@ const details = {
                     </div>
                 </div>
             </div>
+            <div id="alert_wrapper"></div>
     
             <div class="task-list card">
                 <div class="card-header">
@@ -40,12 +43,14 @@ const details = {
     renderTask: async () => {
         let task = await getTask(details.id)
         let editButton = document.getElementById('edit_btn')
+        let deleteButton = document.getElementById('delete_btn')
         let titleDom = document.getElementById('title')
         let descriptionDom = document.getElementById('description')
         if (!task) {
             titleDom.innerHTML = "<b>Task Not Found</b>"
         } else {
             editButton.href = '/edit/'+details.id
+            deleteButton.setAttribute('data-id', details.id)
             titleDom.innerHTML = task.title
             descriptionDom.innerHTML = task.description
         }
@@ -53,10 +58,22 @@ const details = {
 
     setDeleteBtnHandler: () => {
         let deleteBtn = document.getElementById('delete_btn')
-        deleteBtn.addEventListener('click', function () {
-            deleteTask(details.id)
-            document.location.href = "/"
+        deleteBtn.addEventListener('click', async function () {
+            let id = deleteBtn.getAttribute('data-id')
+            let response = await deleteTask(id)
+            if (response.success) {
+                localStorage.setItem('success', response.message)
+                document.location.href = "/"
+            }
+            else {
+                localStorage.setItem('error', response.message)
+                details.showAlert()
+            }
         })
+    },
+    showAlert: () => {
+        let alertWrapper = document.getElementById('alert_wrapper')
+        alert.render(alertWrapper)
     }
 }
 

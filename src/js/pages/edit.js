@@ -1,10 +1,10 @@
-import {getTask, updateTask} from "./config";
+import {getTask, updateTask} from "../services/api_service";
+import alert from "../components/alert";
 
 const edit = {
-    setup: ({id}) => {
-        edit.index = id
+    setup: async ({id}) => {
+        edit.id = id
         edit.renderTask()
-        edit.setEditBtnHandler()
     },
 
     template: `
@@ -20,6 +20,7 @@ const edit = {
                     </div>
                 </div>
             </div>
+            <div id="alert_wrapper"></div>
     
             <div class="task-list card">
                 <div class="card-header">
@@ -35,15 +36,15 @@ const edit = {
                             <label>Description</label>
                             <textarea name="description" id="description" class="form-control" placeholder="Enter task description"></textarea>
                         </div>
-                        <button type="button" class="btn btn-primary" id="edit_btn">Submit</button>
+                        <button type="button" class="btn btn-primary" id="submit_btn">Submit</button>
                     </form>
                 </div>
             </div>
         </div>
     `,
 
-    renderTask: () => {
-        let task = getTask(edit.index)
+    renderTask: async () => {
+        let task = await getTask(edit.id)
         if (!task) {
             let cardBody = document.getElementById('card_body')
             cardBody.innerHTML = "<b>Task Not Found</b>"
@@ -52,21 +53,35 @@ const edit = {
             let descriptionInput = document.getElementById('description')
             titleInput.value = task.title
             descriptionInput.value = task.description
+
+            edit.setEditBtnHandler()
         }
     },
 
     setEditBtnHandler: () => {
-        let editBtn = document.getElementById('edit_btn')
-        editBtn.addEventListener('click', function () {
+        let editBtn = document.getElementById('submit_btn')
+        editBtn.addEventListener('click', async function () {
             let titleInput = document.getElementById('title')
             let descriptionInput = document.getElementById('description')
             let task = {
+                id: edit.id,
                 title: titleInput.value,
                 description: descriptionInput.value
             }
-            updateTask(task, edit.index)
-            document.location.href = "/"+edit.index
+            let response = await updateTask(task)
+            if(response.success) {
+                localStorage.setItem('success', response.message)
+                document.location.href = "/" + edit.id
+            }
+            else {
+                localStorage.setItem('error', response.message)
+                edit.showAlert()
+            }
         })
+    },
+    showAlert: () => {
+        let alertWrapper = document.getElementById('alert_wrapper')
+        alert.render(alertWrapper)
     }
 }
 

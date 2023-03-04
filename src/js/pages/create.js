@@ -1,4 +1,5 @@
-import {setTask} from "./config";
+import {setTask} from "../services/api_service";
+import alert from "../components/alert";
 
 const create = {
     setup: () => {
@@ -17,6 +18,7 @@ const create = {
                     </div>
                 </div>
             </div>
+            <div id="alert_wrapper"></div>
     
             <div class="task-list card">
                 <div class="card-header">
@@ -49,8 +51,21 @@ const create = {
                 title: titleInput.value,
                 description: descriptionInput.value
             }
-            await setTask(task)
+            let response = await setTask(task)
+            if (response.success) {
+                localStorage.setItem('success', response.message)
+                document.location.href = "/"
+            }
+            else {
+                localStorage.setItem('error', response.message)
+                create.showAlert()
+            }
         })
+    },
+
+    showAlert: () => {
+        let alertWrapper = document.getElementById('alert_wrapper')
+        alert.render(alertWrapper)
     }
 }
 

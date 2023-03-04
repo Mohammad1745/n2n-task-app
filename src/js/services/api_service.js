@@ -36,46 +36,41 @@ export async function getTask(id) {
         return null
     }
 }
-export async function setTask(task) {
+export async function setTask(data) {
     try {
         let res = await axios({
             method: 'POST',
             url: `${apiBase}/task`,
-            data: task
+            data
         })
-        if (res.data.success) {
-            console.log(res.data.message)
-        } else {
-            console.log(res.data.message)
-        }
+        return res.data
     }
     catch(err) {
-        console.log('err: ', err)
+        return err.response.data
     }
 }
-export function updateTask(task, index) {
-    let tasks =  getTasks()
-    if (index >= tasks.length) {
-        return false
+export async function updateTask(data) {
+    try {
+        let res = await axios({
+            method: 'POST',
+            url: `${apiBase}/task/update`,
+            data
+        })
+        return res.data
     }
-    tasks[index] = task
-    localStorage.setItem('tasks', JSON.stringify(tasks))
-    return true
-}
-export function deleteTask(index) {
-    let tasks = getTasks()
-    if (index >= tasks.length) {
-        return false
+    catch(err) {
+        return err.response.data
     }
-    tasks.splice(index, 1)
-    localStorage.setItem('tasks', JSON.stringify(tasks))
-    return true
 }
-export function getIndex() {
-    let index = localStorage.getItem('task-index')
-    return index ? index : null
-}
-export function setIndex(index) {
-    localStorage.setItem('task-index', index)
-    return true
+export async function deleteTask(id) {
+    try {
+        let res = await axios({
+            method: 'GET',
+            url: `${apiBase}/task/delete/${id}`
+        })
+        return res.data
+    }
+    catch(err) {
+        return err.response.data
+    }
 }
