@@ -1,4 +1,4 @@
-import {setTask} from "../services/api_service";
+import {createTask} from "../services/api_service";
 import alert from "../components/alert";
 
 const create = {
@@ -51,7 +51,7 @@ const create = {
                 title: titleInput.value,
                 description: descriptionInput.value
             }
-            let response = await setTask(task)
+            let response = await createTask(task)
             if (response.success) {
                 localStorage.setItem('success', response.message)
                 document.location.href = "/"
