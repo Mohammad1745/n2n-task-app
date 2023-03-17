@@ -1,4 +1,4 @@
-export const apiBase = `http://127.0.0.1:8002/api`
+export const apiBase = `http://127.0.0.1:8001/api`
 
 export async function loginUser(data) {
     try {
@@ -40,6 +40,7 @@ export async function getTasks() {
         if (res.data.success) {
             return res.data.data.tasks
         } else if (res.data.message === "Unauthenticated") {
+            localStorage.removeItem('token')
             return window.location.href = '/login'
         } else {
             console.log(res.data.message)
@@ -64,6 +65,9 @@ export async function getTask(id) {
         })
         if (res.data.success) {
             return res.data.data.task
+        } else if (res.data.message === "Unauthenticated") {
+            localStorage.removeItem('token')
+            return window.location.href = '/login'
         } else {
             console.log(res.data.message)
             return null
@@ -118,6 +122,23 @@ export async function deleteTask(id) {
         let res = await axios({
             method: 'GET',
             url: `${apiBase}/task/delete/${id}`,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return res.data
+    }
+    catch(err) {
+        return err.response.data
+    }
+}
+export async function logout () {
+    try {
+        let token = localStorage.getItem('token')
+        if (!token) return {message: "Already logged out."}
+        let res = await axios({
+            method: 'GET',
+            url: `${apiBase}/logout`,
             headers: {
                 Authorization: `Bearer ${token}`
             }

@@ -1,4 +1,4 @@
-import {getTasks,deleteTask} from '../services/api_service'
+import {getTasks, deleteTask, logout} from '../services/api_service'
 import alert from "../components/alert";
 
 const list = {
@@ -6,18 +6,19 @@ const list = {
         list.tasks = await getTasks()
         list.loadTasks()
         list.setDeleteBtnHandler ()
+        list.setLogoutBtnHandler()
         list.showAlert()
     },
     template:  `
         <div class="container">
             <div class="nav">
                 <div class="logo">TASKS</div>
-                <div class="menus">
+                <div class="menus" id="menus">
                     <div class="left-menus">
-                        <a href="" class="nav-item">Tasks</a>
+                        <a href="/task" class="nav-item">Tasks</a>
                     </div>
                     <div class="right-menus">
-                        <a href="" class="nav-item">Logout</a>
+                        <span class="nav-item cursor-pointer" id="logout_btn">Logout</span>
                     </div>
                 </div>
             </div>
@@ -26,7 +27,7 @@ const list = {
             <div class="task-list card">
                 <div class="card-header">
                     <span>Task List</span>
-                    <a href="/create">Create Task</a>
+                    <a href="/task/create">Create Task</a>
                 </div>
                 <div class="card-body">
                     <div class="tasks" id="tasks">
@@ -53,10 +54,10 @@ const list = {
         tasksDom.insertAdjacentHTML('beforeend', `
         <div class="task-item">
             <div class="task-title">
-                <a href="/${task.id}" class="details-btn cursor-pointer">${task.title}</a>
+                <a href="/task/${task.id}" class="details-btn cursor-pointer">${task.title}</a>
             </div>
             <div class="task-actions">
-                <a  href="/edit/${task.id}" class="btn btn-info edit-btn"">Edit</a>
+                <a  href="/task/edit/${task.id}" class="btn btn-info edit-btn"">Edit</a>
                 <span class="btn btn-danger delete-btn" data-id="${task.id}">Delete</span>
             </div>
         </div>
@@ -76,6 +77,23 @@ const list = {
                 else {
                     localStorage.setItem('error', response.message)
                     list.showAlert()
+                }
+            })
+        }
+    },
+
+    setLogoutBtnHandler: () => {
+        let logoutBtn = document.getElementById('logout_btn')
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async function () {
+                let response = await logout()
+                if (response.success) {
+                    localStorage.setItem('success', response.message)
+                    localStorage.removeItem('token')
+                    document.location.href = "/"
+                } else {
+                    localStorage.setItem('error', response.message)
+                    home.showAlert()
                 }
             })
         }

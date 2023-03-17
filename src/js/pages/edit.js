@@ -1,22 +1,23 @@
-import {getTask, updateTask} from "../services/api_service";
+import {getTask, logout, updateTask} from "../services/api_service";
 import alert from "../components/alert";
 
 const edit = {
     setup: async ({id}) => {
         edit.id = id
         edit.renderTask()
+        edit.setLogoutBtnHandler()
     },
 
     template: `
         <div class="container">
             <div class="nav">
                 <div class="logo">TASKS</div>
-                <div class="menus">
+                <div class="menus" id="menus">
                     <div class="left-menus">
-                        <a href="/" class="nav-item">Tasks</a>
+                        <a href="/task" class="nav-item">Tasks</a>
                     </div>
                     <div class="right-menus">
-                        <a href="" class="nav-item">Logout</a>
+                        <span class="nav-item cursor-pointer" id="logout_btn">Logout</span>
                     </div>
                 </div>
             </div>
@@ -71,13 +72,32 @@ const edit = {
             let response = await updateTask(task)
             if(response.success) {
                 localStorage.setItem('success', response.message)
-                document.location.href = "/" + edit.id
-            }
-            else {
+                document.location.href = "/task/" + edit.id
+            } else if (res.data.message === "Unauthenticated") {
+                localStorage.removeItem('token')
+                return window.location.href = '/login'
+            } else {
                 localStorage.setItem('error', response.message)
                 edit.showAlert()
             }
         })
+    },
+
+    setLogoutBtnHandler: () => {
+        let logoutBtn = document.getElementById('logout_btn')
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async function () {
+                let response = await logout()
+                if (response.success) {
+                    localStorage.setItem('success', response.message)
+                    localStorage.removeItem('token')
+                    document.location.href = "/"
+                } else {
+                    localStorage.setItem('error', response.message)
+                    home.showAlert()
+                }
+            })
+        }
     },
     showAlert: () => {
         let alertWrapper = document.getElementById('alert_wrapper')

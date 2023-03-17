@@ -1,20 +1,21 @@
-import {createTask} from "../services/api_service";
+import {createTask, logout} from "../services/api_service";
 import alert from "../components/alert";
 
 const create = {
     setup: () => {
         create.setCreateBtnHandler()
+        create.setLogoutBtnHandler()
     },
     template:  `
         <div class="container">
             <div class="nav">
                 <div class="logo">TASKS</div>
-                <div class="menus">
+                <div class="menus" id="menus">
                     <div class="left-menus">
-                        <a href="/" class="nav-item">Tasks</a>
+                        <a href="/task" class="nav-item">Tasks</a>
                     </div>
                     <div class="right-menus">
-                        <a href="" class="nav-item">Logout</a>
+                        <span class="nav-item cursor-pointer" id="logout_btn">Logout</span>
                     </div>
                 </div>
             </div>
@@ -23,7 +24,7 @@ const create = {
             <div class="task-list card">
                 <div class="card-header">
                     <span>Create Task</span>
-                    <a href="/">Task List</a>
+                    <a href="/task">Task List</a>
                 </div>
                 <div class="card-body">
                     <form>
@@ -54,13 +55,33 @@ const create = {
             let response = await createTask(task)
             if (response.success) {
                 localStorage.setItem('success', response.message)
-                document.location.href = "/"
+                document.location.href = "/task"
+            } else if (res.data.message === "Unauthenticated") {
+                localStorage.removeItem('token')
+                return window.location.href = '/login'
             }
             else {
                 localStorage.setItem('error', response.message)
                 create.showAlert()
             }
         })
+    },
+
+    setLogoutBtnHandler: () => {
+        let logoutBtn = document.getElementById('logout_btn')
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async function () {
+                let response = await logout()
+                if (response.success) {
+                    localStorage.setItem('success', response.message)
+                    localStorage.removeItem('token')
+                    document.location.href = "/"
+                } else {
+                    localStorage.setItem('error', response.message)
+                    home.showAlert()
+                }
+            })
+        }
     },
 
     showAlert: () => {

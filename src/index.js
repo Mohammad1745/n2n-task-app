@@ -1,17 +1,19 @@
 import router from './core/router'
 
+import home from "./js/pages/home"
 import list from "./js/pages/list"
 import create from "./js/pages/create"
 import details from "./js/pages/details"
 import edit from "./js/pages/edit"
-import register from "./js/pages/auth/register";
-import login from "./js/pages/auth/login";
+import register from "./js/pages/auth/register"
+import login from "./js/pages/auth/login"
 
 router.setup({
-    '/': list,
+    '/': home,
+    '/task': list,
     '/register': register,
     '/login': login,
-    '/create': create,
-    '/edit/{id}': edit,
-    '/{id}': details,
+    '/task/create': create,
+    '/task/edit/{id}': edit,
+    '/task/{id}': details,
 })
