@@ -1,8 +1,10 @@
-import {getTasks, deleteTask, logout} from '../services/api_service'
-import alert from "../components/alert";
+import {getTasks, deleteTask, logout} from '../../services/api_service'
+import alert from "../../components/alert";
+import nav from "../../components/nav";
 
 const list = {
     setup: async () => {
+        list.showNavbar ()
         list.tasks = await getTasks()
         list.loadTasks()
         list.setDeleteBtnHandler ()
@@ -11,17 +13,7 @@ const list = {
     },
     template:  `
         <div class="container">
-            <div class="nav">
-                <div class="logo">TASKS</div>
-                <div class="menus" id="menus">
-                    <div class="left-menus">
-                        <a href="/task" class="nav-item">Tasks</a>
-                    </div>
-                    <div class="right-menus">
-                        <span class="nav-item cursor-pointer" id="logout_btn">Logout</span>
-                    </div>
-                </div>
-            </div>
+            <div class="nav" id="nav"> </div>
             <div id="alert_wrapper"></div>
     
             <div class="task-list card">
@@ -90,13 +82,18 @@ const list = {
                 if (response.success) {
                     localStorage.setItem('success', response.message)
                     localStorage.removeItem('token')
-                    document.location.href = "/"
+                    document.location.href = window.location.origin+"/"
                 } else {
                     localStorage.setItem('error', response.message)
-                    home.showAlert()
+                    list.showAlert()
                 }
             })
         }
+    },
+
+    showNavbar: () => {
+        let navDom = document.getElementById('nav')
+        nav.render(navDom)
     },
 
     showAlert: () => {

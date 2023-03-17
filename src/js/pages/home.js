@@ -1,25 +1,16 @@
+import nav from "../components/nav";
 import alert from "../components/alert";
 import {logout} from "../services/api_service";
 
 const home = {
     setup: () => {
-        home.setMenus ()
+        home.showNavbar ()
         home.setLogoutBtnHandler()
         home.showAlert()
     },
     template:  `
         <div class="container">
-            <div class="nav">
-                <div class="logo">TASKS</div>
-                <div class="menus" id="menus">
-                    <div class="left-menus">
-                        <a href="/task" class="nav-item">Tasks</a>
-                    </div>
-                    <div class="right-menus">
-                        <span class="nav-item cursor-pointer" id="logout_btn">Logout</span>
-                    </div>
-                </div>
-            </div>
+            <div class="nav" id="nav"></div>
             <div id="alert_wrapper"></div>
     
             <div class="task-list card">
@@ -52,13 +43,18 @@ const home = {
                 if (response.success) {
                     localStorage.setItem('success', response.message)
                     localStorage.removeItem('token')
-                    document.location.href = "/"
+                    document.location.href = window.location.origin+"/"
                 } else {
                     localStorage.setItem('error', response.message)
                     home.showAlert()
                 }
             })
         }
+    },
+
+    showNavbar: () => {
+        let navDom = document.getElementById('nav')
+        nav.render(navDom)
     },
 
     showAlert: () => {

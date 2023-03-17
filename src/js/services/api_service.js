@@ -13,6 +13,19 @@ export async function loginUser(data) {
         return err.response.data
     }
 }
+export async function verifyUser(data) {
+    try {
+        let res = await axios({
+            method: 'POST',
+            url: `${apiBase}/verification`,
+            data
+        })
+        return res.data
+    }
+    catch(err) {
+        return err.response.data
+    }
+}
 export async function registerUser(data) {
     try {
         let res = await axios({

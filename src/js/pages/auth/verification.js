@@ -1,12 +1,12 @@
-import {loginUser} from "../../services/api_service";
+import {verifyUser} from "../../services/api_service";
 import alert from "../../components/alert";
 import nav from "../../components/nav";
 
-const login = {
+const verification = {
     setup: () => {
-        login.showNavbar()
-        login.setSubmitBtnHandler()
-        login.showAlert()
+        verification.showNavbar()
+        verification.setSubmitBtnHandler()
+        verification.showAlert()
     },
     template:  `
         <div class="container">
@@ -15,7 +15,7 @@ const login = {
     
             <div class="task-list card">
                 <div class="card-header">
-                    <span>Login</span>
+                    <span>Verification</span>
                 </div>
                 <div class="card-body">
                     <form>
@@ -24,10 +24,10 @@ const login = {
                             <input type="email" name="email" id="email" class="form-control" placeholder="Enter email">
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" name="password" id="password" class="form-control" placeholder="Enter password">
+                            <label>Code</label>
+                            <input type="text" name="code" id="code" class="form-control" placeholder="Enter code">
                         </div>
-                        <button type="button" class="btn btn-primary" id="submit_btn">Login</button>
+                        <button type="button" class="btn btn-primary" id="submit_btn">Verify</button>
                     </form>
                 </div>
             </div>
@@ -38,20 +38,19 @@ const login = {
         let loginBtn = document.getElementById('submit_btn')
         loginBtn.addEventListener('click', async function () {
             let emailInput = document.getElementById('email')
-            let passwordInput = document.getElementById('password')
+            let codeInput = document.getElementById('code')
             let data = {
                 email: emailInput.value,
-                password: passwordInput.value,
+                code: codeInput.value,
             }
-            let response = await loginUser(data)
+            let response = await verifyUser(data)
             if (response.success) {
                 localStorage.setItem('success', response.message)
-                localStorage.setItem('token', response.data.authorization.token)
-                document.location.href = window.location.origin+"/"
+                document.location.href = window.location.origin+"/login"
             }
             else {
                 localStorage.setItem('error', response.message)
-                login.showAlert()
+                verification.showAlert()
             }
         })
     },
@@ -67,4 +66,4 @@ const login = {
     }
 }
 
-export default login
+export default verification

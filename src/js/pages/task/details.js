@@ -1,8 +1,10 @@
-import {deleteTask, getTask, logout} from "../services/api_service";
-import alert from "../components/alert";
+import {deleteTask, getTask, logout} from "../../services/api_service";
+import alert from "../../components/alert";
+import nav from "../../components/nav";
 
 const details = {
     setup: ({id}) => {
+        details.showNavbar()
         details.id = id
         details.renderTask()
         details.setDeleteBtnHandler()
@@ -12,17 +14,7 @@ const details = {
 
     template: `
          <div class="container">
-            <div class="nav">
-                <div class="logo">TASKS</div>
-                <div class="menus" id="menus">
-                    <div class="left-menus">
-                        <a href="/task" class="nav-item">Tasks</a>
-                    </div>
-                    <div class="right-menus">
-                        <span class="nav-item cursor-pointer" id="logout_btn">Logout</span>
-                    </div>
-                </div>
-            </div>
+            <div class="nav" id="nav"></div>
             <div id="alert_wrapper"></div>
     
             <div class="task-list card">
@@ -64,10 +56,10 @@ const details = {
             let response = await deleteTask(id)
             if (response.success) {
                 localStorage.setItem('success', response.message)
-                document.location.href = "/list"
+                document.location.href = window.location.origin+"/task"
             } else if (res.data.message === "Unauthenticated") {
                 localStorage.removeItem('token')
-                return window.location.href = '/login'
+                return window.location.href = window.location.origin+'/login'
             } else {
                 localStorage.setItem('error', response.message)
                 details.showAlert()
@@ -83,14 +75,20 @@ const details = {
                 if (response.success) {
                     localStorage.setItem('success', response.message)
                     localStorage.removeItem('token')
-                    document.location.href = "/"
+                    document.location.href = window.location.origin+"/"
                 } else {
                     localStorage.setItem('error', response.message)
-                    home.showAlert()
+                    details.showAlert()
                 }
             })
         }
     },
+
+    showNavbar: () => {
+        let navDom = document.getElementById('nav')
+        nav.render(navDom)
+    },
+
     showAlert: () => {
         let alertWrapper = document.getElementById('alert_wrapper')
         alert.render(alertWrapper)

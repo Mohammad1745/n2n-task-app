@@ -1,23 +1,15 @@
 import {registerUser} from "../../services/api_service";
 import alert from "../../components/alert";
+import nav from "../../components/nav";
 
 const register = {
     setup: () => {
+        register.showNavbar()
         register.setSubmitBtnHandler()
     },
     template:  `
         <div class="container">
-            <div class="nav">
-                <div class="logo">TASKS</div>
-                <div class="menus">
-                    <div class="left-menus">
-                    </div>
-                    <div class="right-menus">
-                        <a href="/login" class="nav-item">Login</a>
-                        <a href="/register" class="nav-item">Register</a>
-                    </div>
-                </div>
-            </div>
+            <div class="nav" id="nav"></div>
             <div id="alert_wrapper"></div>
     
             <div class="task-list card">
@@ -65,13 +57,18 @@ const register = {
             let response = await registerUser(data)
             if (response.success) {
                 localStorage.setItem('success', response.message)
-                document.location.href = window.location.origin+"/login"
+                document.location.href = window.location.origin+"/verification"
             }
             else {
                 localStorage.setItem('error', response.message)
                 register.showAlert()
             }
         })
+    },
+
+    showNavbar: () => {
+        let navDom = document.getElementById('nav')
+        nav.render(navDom)
     },
 
     showAlert: () => {
